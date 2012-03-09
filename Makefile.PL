@@ -25,7 +25,7 @@ BEGIN {
 use inc::Module::Install;
 
 all_from 'lib/Tako.pm';
-
+install_share;
 
 test_requires 'Test::More'     => '0.88';
 test_requires 'Test::Requires' => '0.06';
@@ -34,7 +34,6 @@ auto_set_repository;
 
 tests_recursive;
 author_tests 'xt';
-
 
 clean_files qw(
     Tako-*
