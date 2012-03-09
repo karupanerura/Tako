@@ -1,44 +1,25 @@
-package Tako;
-use 5.010_000;
+package Tako::Util;
+use 5.008_001;
 use strict;
 use warnings;
-use utf8;
 
 our $VERSION = '0.01';
 
-use parent qw/Amon2/;
-use Tako::Utils;
-
-# initialize database
-use DBI;
-sub setup_schema {
-    my $self = shift;
-    my $dbh = $self->dbh();
-    my $driver_name = $dbh->{Driver}->{Name};
-
-    my $fname = Tako::Utils::get_file_path(sql => "${driver_name}.sql");
-    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    my $source = do { local $/; <$fh> };
-    for my $stmt (split /;/, $source) {
-        next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr();
-    }
-}
 
 1;
 __END__
 
 =head1 NAME
 
-Tako - Perl extention to do something
+Tako::Util - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako version 0.01.
+This document describes Tako::Util version 0.01.
 
 =head1 SYNOPSIS
 
-    use Tako;
+    use Tako::Util;
 
 =head1 DESCRIPTION
 
