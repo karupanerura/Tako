@@ -1,4 +1,4 @@
-package Tako;
+package Tako::Server;
 use 5.010_000;
 use strict;
 use warnings;
@@ -6,21 +6,30 @@ use utf8;
 
 our $VERSION = '0.01';
 
+use Class::Accessor::Lite;
 
 1;
 __END__
 
 =head1 NAME
 
-Tako - Perl extention to do something
+Tako::Server - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako version 0.01.
+This document describes Tako::Server version 0.01.
 
 =head1 SYNOPSIS
 
-    use Tako;
+    use Tako::Server;
+    use Tako::Config;
+
+    my $config = Tako::Config->load('config.yaml');
+    Tako::Server->new(
+        host => '0.0.0.0',
+        port => 80,
+        config => $config,
+    )->run;
 
 =head1 DESCRIPTION
 

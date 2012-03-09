@@ -1,4 +1,4 @@
-package Tako;
+package Tako::Config;
 use 5.010_000;
 use strict;
 use warnings;
@@ -7,20 +7,45 @@ use utf8;
 our $VERSION = '0.01';
 
 
+
+package Tako::Config::Object;
+use 5.010_000;
+use strict;
+use warnings;
+use utf8;
+
+our $VERSION = '0.01';
+
+
+
+package Tako::Config;
+
 1;
 __END__
 
 =head1 NAME
 
-Tako - Perl extention to do something
+Tako::Config - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako version 0.01.
+This document describes Tako::Config version 0.01.
 
 =head1 SYNOPSIS
 
-    use Tako;
+    use Tako::Config;
+
+    my $config = Tako::Config->load('config.yaml');
+
+or
+
+    my $config = Tako::Config::Object->new(
+        db => +{
+            dsn      => '',
+            user     => '',
+            password => '',
+        },
+    );
 
 =head1 DESCRIPTION
 
