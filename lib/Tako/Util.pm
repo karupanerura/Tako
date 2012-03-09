@@ -1,10 +1,29 @@
 package Tako::Util;
-use 5.008_001;
+use 5.010_000;
 use strict;
 use warnings;
+use utf8;
 
 our $VERSION = '0.01';
 
+use parent qw/Exporter/;
+use Amon2::Util;
+use File::Spec;
+use File::ShareDir;
+
+our @EXPORT_OK = qw/is_development get_path/;
+
+use constant +{
+    is_development => $ENV{PLACK_ENV} ? $ENV{PLACK_ENV} eq 'development' : 1,
+};
+
+sub get_path {
+    state $base_dir = is_development ?
+        File::Spec->catfile( Amon2::Util::base_dir(__PACKAGE__), 'share' ):
+        File::ShareDir::dist_dir('Tako');
+
+    File::Spec->catfile($base_dir, @_);
+}
 
 1;
 __END__
