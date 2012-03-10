@@ -7,8 +7,8 @@ use utf8;
 our $VERSION = '0.01';
 
 use parent qw/Tako Amon2::Web/;
-use Tako::Util;
 use Tako::Web::Dispatcher;
+use Tako::Web::Middleware;
 
 # dispatcher
 sub dispatch {
@@ -17,31 +17,17 @@ sub dispatch {
 
 sub to_app {
     my $class = shift;
+    $class->new(@_)->setup_schema;
 
-    return Plack::Builder::builder {
-        enable 'Plack::Middleware::Header',
-            set => [
-                'X-Content-Type-Options' => 'nosniff',
-                'X-Frame-Options'        => 'DENY',
-            ];
-        enable 'Plack::Middleware::Static',
-            path => qr{^(?:/static/)},
-            root => Tako::Util::get_path(htdocs => 'static');
-        enable 'Plack::Middleware::Static',
-            path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-            root => Tako::Util::get_path('htdocs');
-        enable 'Plack::Middleware::ReverseProxy';
-        enable 'Plack::Middleware::Session::Cookie';
-
-        $class->SUPER::to_app;
-    };
+    my $app = $class->SUPER::to_app;
+    return Tako::Web::Middleware->wrap($app);
 }
 
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::CSRFDefender',
-    '+Tako::Web::Plugin::Xslate',
+    '+Tako::Plugin::Web::Xslate',
 );
 
 1;

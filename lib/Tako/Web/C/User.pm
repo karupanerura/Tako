@@ -1,10 +1,16 @@
 package Tako::Web::C::User;
-use 5.008_001;
+use 5.010_000;
 use strict;
 use warnings;
+use utf8;
 
 our $VERSION = '0.01';
 
+sub index {
+    my ($class, $c) = @_;
+
+    return $c->render('user/index.html' => {});
+}
 
 1;
 __END__

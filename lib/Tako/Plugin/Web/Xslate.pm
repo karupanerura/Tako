@@ -1,5 +1,5 @@
-package Tako::Web::Plugin::Xslate;
-use 5.008_001;
+package Tako::Plugin::Web::Xslate;
+use 5.010_000;
 use strict;
 use warnings;
 use utf8;
@@ -34,11 +34,11 @@ __END__
 
 =head1 NAME
 
-Tako::Web::Plugin::Xslate - Perl extention to do something
+Tako::Plugin::Web::Xslate - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako::Web::Plugin::Xslate version 0.01.
+This document describes Tako::Plugin::Web::Xslate version 0.01.
 
 =head1 SYNOPSIS
 
@@ -49,7 +49,7 @@ This document describes Tako::Web::Plugin::Xslate version 0.01.
 
     use parent qw/Hoge Amon2::Web/;
 
-    __PACKAGE__->load_plugins(qw/+Tako::Web::Plugin::Xslate/);
+    __PACKAGE__->load_plugins(qw/+Tako::Plugin::Web::Xslate/);
 
     1;
 
