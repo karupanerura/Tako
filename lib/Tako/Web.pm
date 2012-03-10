@@ -17,7 +17,7 @@ sub dispatch {
 
 sub to_app {
     my $class = shift;
-    $class->new(@_)->setup_schema;
+    $class->new(@_)->setup_schema if (@_);
 
     my $app = $class->SUPER::to_app;
     return Tako::Web::Middleware->wrap($app);

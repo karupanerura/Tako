@@ -21,6 +21,7 @@ use Twiggy::Server;
 use Log::Minimal;
 use Data::Validator;
 
+use Tako;
 use Tako::Web;
 use Tako::IRC::Server;
 
@@ -42,10 +43,20 @@ sub run {
 
     my $cv = AnyEvent->condvar;
 
+    my $c    = $self->create_controler;
     my $twg  = $self->create_webserver;
     my $ircd = $self->create_irc_proxy;
 
     $cv->recv;
+}
+
+sub create_controler {
+    my $self = shift;
+
+    my $c = Tako->bootstrap(config => $self->config);
+    $c->setup_schema;
+
+    return $c;
 }
 
 sub create_webserver {
@@ -55,7 +66,7 @@ sub create_webserver {
         host => $self->http_host,
         port => $self->http_port,
     );
-    my $app = Tako::Web->to_app(config => $self->config);
+    my $app = Tako::Web->to_app;
     $twg->register_service($app);
     infof('Web interface is here: http://%s:%s/', $self->http_host, $self->http_port);
 
