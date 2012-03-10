@@ -25,7 +25,8 @@ BEGIN {
 use inc::Module::Install;
 
 all_from 'lib/Tako.pm';
-install_share;
+install_share  'share';
+install_script 'script/tako';
 
 test_requires 'Test::More'     => '0.88';
 test_requires 'Test::Requires' => '0.06';

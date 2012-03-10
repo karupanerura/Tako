@@ -6,12 +6,33 @@ use utf8;
 
 our $VERSION = '0.01';
 
+use Data::Validator;
 use Class::Accessor::Lite (
-    ro  => [qw/host port config/],
-    new => 1,
+    ro  => [
+        qw/irc_host  irc_port/,
+        qw/http_host http_port/,
+        qw/config/
+    ]
 );
 
-sub run {}
+sub new {
+    state $rule = Data::Validator->new(
+        irc_host  => +{ isa => 'Str', default => '0.0.0.0' },
+        irc_port  => +{ isa => 'Int', default => 6667 },
+        http_host => +{ isa => 'Str', default => '0.0.0.0' },
+        http_port => +{ isa => 'Int', default => 80 },
+        config    => +{ isa => 'Tako::Config::Object' },
+    )->with(qw/Method/);
+    my($class, $arg) = $rule->validate(@_);
+
+    bless +{ %$arg } => $class;
+}
+
+sub run {
+    my $self = shift;
+
+
+}
 
 1;
 __END__
@@ -31,9 +52,11 @@ This document describes Tako::Server version 0.01.
 
     my $config = Tako::Config->load(file => 'config.yaml');
     Tako::Server->new(
-        host   => '0.0.0.0',
-        port   => 80,
-        config => $config,
+        irc_host  => '0.0.0.0',
+        irc_port  => 6667,
+        http_host => '127.0.0.1',
+        http_port => 8080,
+        config    => $config,
     )->run;
 
 =head1 DESCRIPTION

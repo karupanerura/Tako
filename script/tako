@@ -1,0 +1,7 @@
+#!perl
+use strict;
+use warnings;
+use utf8;
+
+use Tako::Runner;
+Tako::Runner->new(@ARGV)->run;
