@@ -9,21 +9,36 @@ our $VERSION = '0.01';
 use parent qw/Amon2/;
 use Tako::Util;
 
+use Class::Accessor::Lite (
+    ro => [qw/config/],
+);
+
+sub load_config { require Carp; Carp::croak('this is abolitioned method.') }
+
 # initialize database
-use DBI;
 sub setup_schema {
     my $self = shift;
-    my $dbh = $self->dbh();
+    my $dbh = $self->dbh;
     my $driver_name = $dbh->{Driver}->{Name};
 
     my $fname = Tako::Util::get_path(sql => "${driver_name}.sql");
-    open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
-    my $source = do { local $/; <$fh> };
-    for my $stmt (split /;/, $source) {
+
+    my $source = do {# read from scheme file
+        open my $fh, '<:encoding(UTF-8)', $fname or die "$fname: $!";
+        my $buf = do { local $/; <$fh> };
+        close($fh);
+        $buf;
+    };
+
+    for my $stmt (split ';', $source) {
         next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr();
+        $dbh->do($stmt) or die $dbh->errstr;
     }
 }
+
+__PACKAGE__->load_plugins(
+    '+Tako::Plugin::DBI',
+);
 
 1;
 __END__
