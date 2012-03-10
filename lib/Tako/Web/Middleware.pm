@@ -20,10 +20,10 @@ sub wrap {
             ];
         enable 'Plack::Middleware::Static',
             path => qr{^(?:/static/)},
-            root => get_path(htdocs => 'static');
+            root => get_path('htdocs');
         enable 'Plack::Middleware::Static',
             path => qr{^(?:/robots\.txt|/favicon\.ico)$},
-            root => get_path('htdocs');
+            root => get_path(htdocs => 'static');
         enable 'Plack::Middleware::ReverseProxy';
         enable 'Plack::Middleware::Session::Cookie';
 
