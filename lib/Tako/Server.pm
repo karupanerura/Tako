@@ -6,7 +6,6 @@ use utf8;
 
 our $VERSION = '0.01';
 
-use Data::Validator;
 use Class::Accessor::Lite (
     ro  => [
         qw/irc_host  irc_port/,
@@ -14,6 +13,15 @@ use Class::Accessor::Lite (
         qw/config/
     ]
 );
+
+use AnyEvent;
+use AnyEvent::CacheDNS ':register';
+use Twiggy::Server;
+
+use Log::Minimal;
+use Data::Validator;
+
+use Tako::Web;
 
 sub new {
     state $rule = Data::Validator->new(
@@ -31,7 +39,26 @@ sub new {
 sub run {
     my $self = shift;
 
+    my $cv = AnyEvent->condvar;
 
+    my $twg  = $self->create_webserver;
+#    my $ircd = $self->create_irc_proxy;# TODO
+
+    $cv->recv;
+}
+
+sub create_webserver {
+    my $self = shift;
+
+    my $twg = Twiggy::Server->new(
+        host => $self->http_host,
+        port => $self->http_port,
+    );
+    my $app = Tako::Web->to_app(config => $self->config);
+    $twg->register_service($app);
+    infof('Web interface is here: http://%s:%s/', $self->http_host, $self->http_port);
+
+    return $twg;
 }
 
 1;
