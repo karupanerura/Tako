@@ -1,4 +1,4 @@
-package Tako::Config;
+package Tako::Config::Object;
 use 5.010_000;
 use strict;
 use warnings;
@@ -6,36 +6,19 @@ use utf8;
 
 our $VERSION = '0.01';
 
-use Tako::Exception;
-use Tako::Config::Object;
-
-use YAML::Syck ();
 use Data::Validator;
-use Log::Minimal;
-use Try::Tiny;
+use Class::Accessor::Lite;
 
-sub load {
+sub new {
     state $rule = Data::Validator->new(
-        file => +{ isa => 'Str' }
+        DBI => +{ isa => 'ArrayRef' },
     )->with(qw/Method/);
     my($class, $arg) = $rule->validate(@_);
 
-    Tako::Exception::Config::FileNotFound->throw(file => $arg->{file}) unless -f $arg->{file};
+    # make accessors
+    Class::Accessor::Lite->mk_ro_accessors(keys %$arg);
 
-    local $YAML::Syck::ImplicitUnicode = 1;
-    my $config = try {
-        YAML::Syck::LoadFile($arg->{file});
-    }
-    catch {
-        my $e = $_;
-
-        Tako::Exception::Config::CannnotReadFile->throw(
-            file  => $arg->{file},
-            error => $e,
-        );
-    };
-
-    return Tako::Config::Object->new($config);
+    bless +{ %$arg } => $class;
 }
 
 1;
@@ -43,17 +26,22 @@ __END__
 
 =head1 NAME
 
-Tako::Config - Perl extention to do something
+Tako::Config::Object - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako::Config version 0.01.
+This document describes Tako::Config::Object version 0.01.
 
 =head1 SYNOPSIS
 
-    use Tako::Config;
-
-    my $config = Tako::Config->load('config.yaml');
+    use Tako::Config::Object;
+    my $config = Tako::Config::Object->new(
+        DBI => [
+           'DBI:SQLite:dbname=:memory:',
+            '',
+            '',
+        ],
+    );
 
 =head1 DESCRIPTION
 
