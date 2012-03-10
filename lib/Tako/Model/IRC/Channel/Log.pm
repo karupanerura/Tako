@@ -1,4 +1,4 @@
-package Tako::Model::IRC::Channel;
+package Tako::Model::IRC::Channel::Log;
 use 5.010_000;
 use strict;
 use warnings;
