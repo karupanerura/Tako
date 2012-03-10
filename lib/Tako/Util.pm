@@ -7,11 +7,15 @@ use utf8;
 our $VERSION = '0.01';
 
 use parent qw/Exporter/;
+
+use Amon2;
 use Amon2::Util;
 use File::Spec;
 use File::ShareDir;
+use POSIX ();
+use Digest::HMAC_SHA1;
 
-our @EXPORT_OK = qw/is_development get_path/;
+our @EXPORT_OK = qw/is_development get_path strftime/;
 
 use constant +{
     is_development => $ENV{PLACK_ENV} ? $ENV{PLACK_ENV} eq 'development' : 1,
@@ -23,6 +27,17 @@ sub get_path {
         File::ShareDir::dist_dir('Tako');
 
     File::Spec->catfile($base_dir, @_);
+}
+
+sub to_hash {
+    Digest::HMAC_SHA1::hmac_sha1_hex(+shift, Amon2->context->config->hash_key);
+}
+
+sub strftime {
+    my($fmt, $epoch) = @_;
+
+    local $ENV{TZ} = Amon2->context->config->time_zone;
+    POSIX::strftime($fmt, CORE::localtime($epoch));
 }
 
 1;

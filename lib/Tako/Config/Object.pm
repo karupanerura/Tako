@@ -11,7 +11,9 @@ use Class::Accessor::Lite;
 
 sub new {
     state $rule = Data::Validator->new(
-        DBI => +{ isa => 'ArrayRef' },
+        DBI       => +{ isa => 'ArrayRef' },
+        time_zone => +{ isa => 'Str' },
+        hash_key  => +{ isa => 'Str' }
     )->with(qw/Method/);
     my($class, $arg) = $rule->validate(@_);
 
