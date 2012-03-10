@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Yet anothor IRC proxy server." />
+    <meta name="author" content="karupanerura" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tako</title>
+    <base href="<: base_url() :>" />
+    <link rel="stylesheet" href="http://bootstrap.static.karupas.org/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="http://bootstrap.static.karupas.org/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="/static/css/layout.css" />
+    <script src="http://bootstrap.static.karupas.org/js/bootstrap.min.js"></script>
+  </head>
+  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Tako</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li>
+                Accessor(TODO)
+              </li>
+              <li>
+                Accessor(TODO)
+              </li>
+            </ul>
+          </div>
+          <form class="navbar-search form-inline pull-right" method="POST">
+            <input type="text"     class="input-small" placeholder="login name">
+            <input type="password" class="input-small" placeholder="password">
+            <button type="submit" class="btn">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <header>
+        <h1>Tako</h1>
+        <hr />
+: if ($title) {
+        <h2><: $title :></h2>
+: }
+        :block header -> {}
+      </header>
+      <section id="main" class="row-fluid">
+: block main -> {}
+      </section>
+
+      <footer class="footer">
+        <small>Copyright(C) karupanerura</small>
+      </footer>
+    </div><!-- /container -->
+  </body>
+</html>
