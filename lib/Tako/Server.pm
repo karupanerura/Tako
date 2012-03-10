@@ -22,6 +22,7 @@ use Log::Minimal;
 use Data::Validator;
 
 use Tako::Web;
+use Tako::IRC::Server;
 
 sub new {
     state $rule = Data::Validator->new(
@@ -42,7 +43,7 @@ sub run {
     my $cv = AnyEvent->condvar;
 
     my $twg  = $self->create_webserver;
-#    my $ircd = $self->create_irc_proxy;# TODO
+    my $ircd = $self->create_irc_proxy;
 
     $cv->recv;
 }
@@ -59,6 +60,20 @@ sub create_webserver {
     infof('Web interface is here: http://%s:%s/', $self->http_host, $self->http_port);
 
     return $twg;
+}
+
+sub create_irc_proxy {
+    my $self = shift;
+
+    my $ircd = Tako::IRC::Server->new(
+        host   => $self->irc_host,
+        port   => $self->irc_port,
+        config => $self->config,
+    );
+    $ircd->run;
+    infof('IRC interface is here: http://%s:%s/', $self->irc_host, $self->irc_port);
+
+    return $ircd;
 }
 
 1;
