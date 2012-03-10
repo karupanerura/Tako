@@ -6,7 +6,12 @@ use utf8;
 
 our $VERSION = '0.01';
 
-use Class::Accessor::Lite;
+use Class::Accessor::Lite (
+    ro  => [qw/host port config/],
+    new => 1,
+);
+
+sub run {}
 
 1;
 __END__
@@ -24,10 +29,10 @@ This document describes Tako::Server version 0.01.
     use Tako::Server;
     use Tako::Config;
 
-    my $config = Tako::Config->load('config.yaml');
+    my $config = Tako::Config->load(file => 'config.yaml');
     Tako::Server->new(
-        host => '0.0.0.0',
-        port => 80,
+        host   => '0.0.0.0',
+        port   => 80,
         config => $config,
     )->run;
 
