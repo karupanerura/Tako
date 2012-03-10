@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS irc_server (
     updated_at        TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="ユーザーが接続しているIRCサーバー";
 
-CREATE TABLE IF NOT EXISTS channel (
+CREATE TABLE IF NOT EXISTS irc_channel (
     id                INTEGER UNSIGNED    NOT NULL PRIMARY KEY AUTO_INCREMENT,
     irc_server_id     INTEGER UNSIGNED    NOT NULL,
     channel_name      VARCHAR(63)         NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS channel (
     updated_at        TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="IRCサーバーのどのチャンネルにJOINしているか";
 
-CREATE TABLE IF NOT EXISTS channel_log (
+CREATE TABLE IF NOT EXISTS irc_channel_log (
     id                INTEGER UNSIGNED   NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    channel_id        INTEGER UNSIGNED   NOT NULL,
+    irc_channel_id    INTEGER UNSIGNED   NOT NULL,
     nick_name         VARCHAR(31) BINARY NOT NULL,
     comment           VARCHAR(255)       NOT NULL,
     created_at        DATETIME           NOT NULL
