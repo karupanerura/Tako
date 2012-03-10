@@ -24,8 +24,10 @@ sub config {
             c        => sub { Amon2->context() },
             uri_with => sub { Amon2->context()->req->uri_with(@_) },
             uri_for  => sub { Amon2->context()->uri_for(@_) },
+            base_url => sub { Amon2->context()->base_url(@_) }
         },
-        path => [ Tako::Util::get_path('tmpl') ]
+        path   => [ Tako::Util::get_path('tmpl') ],
+        suffix => '.html',
     }
 }
 

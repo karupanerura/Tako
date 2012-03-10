@@ -23,6 +23,21 @@ sub to_app {
     return Tako::Web::Middleware->wrap($app);
 }
 
+sub base_url {
+    my($self, $scheme) = @_;
+
+    my $base = $self->_base_url;
+    $base = $base->clone->scheme($scheme) if $scheme;
+
+    return $base->as_string;
+}
+
+sub _base_url {
+    my $self = shift;
+
+    $self->{_base_url} ||= $self->req->base;
+}
+
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
