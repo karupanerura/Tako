@@ -58,6 +58,25 @@ sub msg {
     "config file '@{[ $self->file ]}' cannot read. ERROR: '@{[ $self->error ]}'";
 }
 
+package Tako::Exception::Model;
+use strict;
+use warnings;
+use utf8;
+use parent -norequire, qw/Tako::Exception/;
+use Class::Accessor::Lite ro => [qw/driver_name/];
+
+package Tako::Exception::Model::UnsupportedDriver;
+use strict;
+use warnings;
+use utf8;
+use parent -norequire, qw/Tako::Exception::Model/;
+
+sub msg {
+    my $self = shift;
+
+    "unsupported driver '@{[ $self->driver_name ]}'. patches welcome.";
+}
+
 1;
 __END__
 

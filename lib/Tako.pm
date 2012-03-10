@@ -39,6 +39,7 @@ sub setup_schema {
 
 __PACKAGE__->load_plugins(
     '+Tako::Plugin::AnyEventDBI',
+    '+Tako::Plugin::Model',
 );
 
 1;
