@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 
 CREATE TABLE IF NOT EXISTS user (
-    id                INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+    id                INTEGER          NOT NULL PRIMARY KEY AUTOINCREMENT,
     login_name        VARCHAR(31)      NOT NULL,
     password          VARCHAR(31)      NOT NULL,
     created_at        DATETIME         NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS irc_server (
-    id                INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-    user_id           INTEGER UNSIGNED NOT NULL,
+    id                INTEGER          NOT NULL PRIMARY KEY AUTOINCREMENT,
+    user_id           INTEGER          NOT NULL,
     login_name        VARCHAR(31)      NOT NULL,
     nick_name         VARCHAR(31)      NOT NULL,
     real_name         VARCHAR(31)      NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS irc_server (
 );
 
 CREATE TABLE IF NOT EXISTS irc_channel (
-    id                INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+    id                INTEGER          NOT NULL PRIMARY KEY AUTOINCREMENT,
     irc_server_id     INTEGER          NOT NULL,
     channel_name      VARCHAR(63)      NOT NULL,
     password          VARCHAR(31)      NOT NULL DEFAULT "",
@@ -33,9 +33,10 @@ CREATE TABLE IF NOT EXISTS irc_channel (
 );
 
 CREATE TABLE IF NOT EXISTS irc_channel_log (
-    id                INTEGER UNSIGNED NOT NULL PRIMARY KEY,
-    irc_channel_id    INTEGER UNSIGNED NOT NULL,
+    id                INTEGER          NOT NULL PRIMARY KEY AUTOINCREMENT,
+    irc_channel_id    INTEGER          NOT NULL,
     nick_name         VARCHAR(31)      NOT NULL,
     comment           VARCHAR(255)     NOT NULL,
-    created_at        DATETIME         NOT NULL
+    created_at        DATETIME         NOT NULL,
+    updated_at        TIMESTAMP        NOT NULL
 );

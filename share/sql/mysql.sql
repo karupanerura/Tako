@@ -37,5 +37,6 @@ CREATE TABLE IF NOT EXISTS irc_channel_log (
     irc_channel_id    INTEGER UNSIGNED   NOT NULL,
     nick_name         VARCHAR(31) BINARY NOT NULL,
     comment           VARCHAR(255)       NOT NULL,
-    created_at        DATETIME           NOT NULL
+    created_at        DATETIME           NOT NULL,
+    updated_at        TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="チャンネルのログ";
