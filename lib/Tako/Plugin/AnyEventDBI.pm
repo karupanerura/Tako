@@ -1,4 +1,4 @@
-package Tako::Plugin::DBI;
+package Tako::Plugin::AnyEventDBI;
 use 5.010_000;
 use strict;
 use warnings;
@@ -7,22 +7,27 @@ use utf8;
 our $VERSION = '0.01';
 
 use Amon2::Util;
-use DBIx::Sunny;
+use DBI;
+use AnyEvent::DBI;
 
 sub init {
     my ($class, $c, $conf) = @_;
 
-    Amon2::Util::add_method($c, 'dbh', sub {
+    Amon2::Util::add_method($c, 'adbh', sub {
         my $self = shift;
-        $self->{$class} ||= $self->create_dbh;
+        $self->{$class} ||= $self->create_adbh;
     });
-    Amon2::Util::add_method($c, 'create_dbh', \&_create_dbh);
+    Amon2::Util::add_method($c, 'driver_name', sub {
+        my $self = shift;
+        $self->{driver_name} ||= (DBI->parse_dsn($self->config->{DBI}[0]))[1];
+    });
+    Amon2::Util::add_method($c, 'create_adbh', \&_create_adbh);
 }
 
-sub _create_dbh {
+sub _create_adbh {
     my $self = shift;
 
-    DBIx::Sunny->connect(@{ $self->config->{DBI} });
+    AnyEvent::DBI->new(@{ $self->config->{DBI} });
 }
 
 1;
@@ -30,15 +35,15 @@ __END__
 
 =head1 NAME
 
-Tako::Plugin::DBI - Perl extention to do something
+Tako::Plugin::AnyEventDBI - Perl extention to do something
 
 =head1 VERSION
 
-This document describes Tako::Plugin::DBI version 0.01.
+This document describes Tako::Plugin::AnyEventDBI version 0.01.
 
 =head1 SYNOPSIS
 
-    use Tako::Plugin::DBI;
+    use Tako::Plugin::AnyEventDBI;
 
 =head1 DESCRIPTION
 

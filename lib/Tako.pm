@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 use parent qw/Amon2/;
 use Tako::Util;
 
+use DBI;
 use Class::Accessor::Lite (
     ro => [qw/config/],
 );
@@ -17,9 +18,9 @@ sub load_config { require Carp; Carp::croak('this is abolitioned method.') }
 
 # initialize database
 sub setup_schema {
-    my $self = shift;
-    my $dbh = $self->dbh;
-    my $driver_name = $dbh->{Driver}->{Name};
+    my $self        = shift;
+    my $adbh        = $self->adbh;
+    my $driver_name = $self->driver_name;
 
     my $fname = Tako::Util::get_path(sql => "${driver_name}.sql");
 
@@ -32,12 +33,12 @@ sub setup_schema {
 
     for my $stmt (split ';', $source) {
         next unless $stmt =~ /\S/;
-        $dbh->do($stmt) or die $dbh->errstr;
+        $adbh->exec($stmt, sub {});
     }
 }
 
 __PACKAGE__->load_plugins(
-    '+Tako::Plugin::DBI',
+    '+Tako::Plugin::AnyEventDBI',
 );
 
 1;
